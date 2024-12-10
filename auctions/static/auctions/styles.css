@@ -1,0 +1,59 @@
+.horizontal-padding-100 {
+    padding-right: 100px;
+    padding-left: 100px;
+}
+
+.horizontal-margin-100 {
+    margin-right: 100px;
+    margin-left: 100px;
+}
+
+.horizontal-padding-116 {
+    padding-right: 116px;
+    padding-left: 116px;
+}
+
+.horizontal-margin-116 {
+    margin-right: 116px;
+    margin-left: 116px;
+}
+
+.horizontal-margin-350-right {
+    margin-right: 350px;
+    margin-left: 116px;
+}
+
+.ellipsis_text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.font-size-20 {
+    font-size: 13px;
+}
+
+.w3-sofia {
+    font-family: Sofia, cursive;
+}
+
+.w3-bar > a {
+    text-decoration: none;
+}
+
+.padding-16 {
+    padding: 16px;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.listing-detail h2, h6 {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}

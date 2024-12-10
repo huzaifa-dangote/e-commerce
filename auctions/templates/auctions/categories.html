@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block cat %}
+    w3-text-yellow
+{% endblock %}
+
+{% block body %}
+
+    <div class="w3-panel horizontal-margin-116">
+        <ul class="w3-ul">
+            {% for key, value in listingform.fields.category.choices %}
+                <li class="w3-hover-yellow">
+                    <a href="{% url 'category' key %}" style="text-decoration: none">{{ value }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

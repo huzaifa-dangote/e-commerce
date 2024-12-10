@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block cre %}
+    w3-text-yellow
+{% endblock %}
+
+{% block body %}
+
+    <div class="w3-row horizontal-margin-116">
+        <div class="w3-panel w3-col l6">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="w3-button w3-dark-grey">Submit</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="{% static 'auctions/styles.css' %}" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        {% block head %}{% endblock %}
+    </head>
+    <body class="w3-light-grey">
+        <div class="w3-container w3-dark-grey">
+            <div style="margin-top: 20px; padding-top: 10px" class="w3-bar horizontal-padding-116">
+                <span class="w3-sofia w3-xxlarge">Auctions</span>
+                <span style="padding-top: 20px" class="w3-right">
+                    {% if user.is_authenticated %}
+                    Hello, <strong>{{ user.username.capitalize }}</strong>
+                    {% else %}
+                    Not signed in
+                    {% endif %}
+                </span>
+            </div>
+            <div class="w3-bar w3-padding-16 horizontal-padding-100">
+                <a class="w3-bar-item w3-hover-text-yellow {% block act %}{% endblock %}" href="{% url 'index' %}"><i class="fa fa-home"></i> Active Listings</a>
+                <a class="w3-bar-item w3-hover-text-yellow {% block cat %}{% endblock %}" href="{% url 'categories' %}">Categories</a>
+                {% if user.is_authenticated %}
+                    <a class="w3-bar-item w3-hover-text-yellow {% block cre %}{% endblock %}" href="{% url 'listing-add' %}">Create a Listing</a>
+                    <a class="w3-bar-item w3-hover-text-yellow w3-right" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Log Out</a>
+                    <a class="w3-bar-item w3-hover-text-yellow w3-right {% block wat %}{% endblock %}" href="{% url 'watchlist' user.id %}">Watchlist <span class="w3-badge w3-white">{{ user.watchlist_listings.all.count }}</span></a>
+                {% else %}
+                    <a class="w3-bar-item w3-hover-text-yellow w3-right {% block reg %}{% endblock %}" href="{% url 'register' %}">Register</a>
+                    <a class="w3-bar-item w3-hover-text-yellow w3-right {% block log %}{% endblock %}" href="{% url 'login' %}"><i class="fa fa-sign-in"></i> Log In</a>
+                {% endif %}
+            </div>
+        </div>
+        {% block body %}
+        {% endblock %}
+        <div style="padding: 10px"></div>
+    </body>
+</html>

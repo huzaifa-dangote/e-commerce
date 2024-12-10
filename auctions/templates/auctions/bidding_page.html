@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if user.is_authenticated %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="w3-container horizontal-margin-116">
+                    <div class="messages w3-panel w3-pale-red w3-display-container">
+                        <span onclick="this.parentElement.style.display='none'"
+                              class="w3-button w3-medium w3-display-topright">&times;</span>
+                        <p class="{{ message.tags }}">{{ message }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="w3-row horizontal-margin-116">
+            <div class="w3-container w3-col l6">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="w3-button w3-dark-grey" type="submit">Submit Bid</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

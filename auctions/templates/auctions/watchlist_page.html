@@ -1,0 +1,20 @@
+{% extends "auctions/layout.html" %}
+
+{% block wat %}
+    w3-text-yellow
+{% endblock %}
+
+{% block body %}
+
+    <div class="w3-panel horizontal-margin-116">
+        <ul class="w3-ul">
+            <li class="w3-dark-grey">My Watchlist</li>
+            {% for listing in watchlist %}
+                <li class="w3-hover-yellow">
+                    <a href="{% url 'listing-page' listing.id %}" style="text-decoration: none">{{ listing.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

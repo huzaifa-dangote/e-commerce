@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+
+{% block act %}
+    w3-text-yellow
+{% endblock %}
+
+{% block body %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="w3-container horizontal-margin-116">
+                <div class="messages w3-panel w3-pale-green w3-display-container">
+                    <span onclick="this.parentElement.style.display='none'"
+                          class="w3-button w3-medium w3-display-topright">&times;</span>
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="w3-row horizontal-padding-116">
+        {% for listing in listings %}
+            <div class="w3-col m4 l3 w3-quarter w3-container w3-margin-top w3-hover-opacity">
+                <div class="w3-center w3-white">
+                    {% if listing.image_url is not None %}
+                        <img src="{{ listing.image_url }}" alt="Image of {{ listing.title }}" 
+                                style="height:150px" class="w3-image" />
+                    {% else %}
+                        <img src="https://t3.ftcdn.net/jpg/04/62/93/66/360_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg" 
+                                alt="Image of {{ listing.title }}" style="height:150px" class="w3-image" />
+                    {% endif %}
+                </div>
+                <div class="w3-container w3-white w3-padding-16">
+                    <p class="ellipsis_text font-size-20">{{ listing.title }}</p>
+                    {% if listing.bid.exists %}
+                        <p class="ellipsis_text font-size-20">${{ listing.highest_bid }}</p>
+                    {% else %}
+                        <p class="ellipsis_text font-size-20">${{ listing.starting_bid }}</p>
+                    {% endif %}
+                    <div class="ellipsis_text font-size-20">{{ listing.description }}</div>
+                    <p class="ellipsis_text font-size-20">Posted on {{ listing.date_created }}</p>
+                    <a href="{% url 'listing-page' listing.id %}" class="w3-button w3-light-grey">View</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

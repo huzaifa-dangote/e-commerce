@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+
+{% block log %}
+    w3-text-yellow
+{% endblock %}
+
+{% block body %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="w3-container horizontal-margin-116">
+                <div class="messages w3-panel w3-pale-red w3-display-container">
+                    <span onclick="this.parentElement.style.display='none'"
+                          class="w3-button w3-medium w3-display-topright">&times;</span>
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="w3-row horizontal-margin-116">
+        <div class="w3-panel w3-col l6">
+            <div class="w3-border" style="padding-bottom: 10px">
+                <div class="w3-container w3-dark-grey">
+                    <h2>Login</h2>
+                </div>
+                <form class="w3-container" action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <p>
+                        <label class="w3-text-dark-grey"><b>Username</b></label>
+                        <input autofocus class="w3-input w3-border w3-sand" type="text" name="username">
+                    </p>
+                    <p>
+                        <label class="w3-text-dark-grey"><b>Password</b></label>
+                        <input class="w3-input w3-border w3-sand" type="password" name="password">
+                    </p>
+                    <p>
+                        <button class="w3-button w3-dark-grey" type="submit">Login</button>
+                    </p>
+                </form>
+                <div class="w3-container">
+                    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

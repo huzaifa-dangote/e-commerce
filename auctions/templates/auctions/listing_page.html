@@ -1,0 +1,130 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if listing.winner == request.user %}
+        <div class="w3-container horizontal-margin-116">
+            <div class="w3-panel w3-pale-green w3-display-container">
+                <span onclick="this.parentElement.style.display='none'"
+                      class="w3-button w3-medium w3-display-topright">&times;</span>
+                <p><strong>Congrats!</strong> You have won this auction.</p>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="w3-container horizontal-margin-116">
+                <div class="messages w3-panel w3-pale-green w3-display-container">
+                    <span onclick="this.parentElement.style.display='none'"
+                            class="w3-button w3-medium w3-display-topright">&times;</span>
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="w3-row horizontal-margin-116">
+        <div class="w3-panel w3-col l9">
+            <div class="w3-white padding-16 flex-container">
+                {% if listing.image_url is not None %}
+                    <div>
+                        <img style="height: 300px" src="{{ listing.image_url }}" alt="Image of listing.title" />
+                    </div>
+                {% else %}
+                    <div>
+                        <img style="height: 300px" src="https://t3.ftcdn.net/jpg/04/62/93/66/360_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg" alt="Image of listing.title" />
+                    </div>
+                {% endif %}
+                <div class="listing-detail">
+                    {% if user.is_authenticated %}
+                        <div>
+                            {% if listing in watchlist %}
+                                <form class="w3-right-align" action="{% url 'remove-from-watchlist' listing.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{ listing.id }}" />
+                                    <button type="submit" class="w3-button w3-white w3-border"><i class="fa fa-eye-slash"></i> Remove From Watchlist</button>
+                                </form>
+                            {% else %}
+                                <form class="w3-right-align" action="{% url 'add-to-watchlist' listing.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{ listing.id }}" />
+                                    <button type="submit" class="w3-button w3-white w3-border"><i class="fa fa-eye"></i> Add To Watchlist</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    <h2>{{ listing.title }}</h2>
+                    <p>Description: {{ listing.description }}</p>
+                    <hr />
+                    {% if listing.is_inactive is False %}
+                        <div class="w3-panel w3-center w3-red w3-round">
+                            <p>Live auction!</p>
+                        </div>
+                    {% else %}
+                        <div class="w3-panel w3-center w3-pale-blue w3-round">
+                            <p>Auction is closed</p>
+                        </div>
+                    {% endif %}
+                    {% if listing.bid.exists %}
+                        <h6>Highest Bid:</h6>
+                        <h2><strong><i class="fa fa-dollar"></i> {{ highest_bid }}</strong></h2>
+                    {% else %}
+                        <h6>Starting Bid:</h6>
+                        <h2><strong><i class="fa fa-dollar"></i> {{ listing.starting_bid }}</strong></h2>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        {% if listing.created_by == user %}
+                            <a href="{% url 'close-auction' listing.id %}">Close auction</a><br />
+                        {% endif %}
+                    {% endif %}
+                    <br/>
+                    <ul class="w3-ul w3-small">
+                        <li class="w3-light-grey">Listing info</li>
+                        <li>Listed by: {{ listing.created_by }}</li>
+                        <li>Category: {{ listing.category }}</li>
+                    </ul>
+                    <hr />
+                    {% if user.is_authenticated and listing.is_inactive is False %}
+                        <a href="{% url 'bidding' listing.id %}" class="w3-button w3-block w3-round w3-dark-grey">Submit a Bid</a><br />
+                    {% else %}
+                        <button class="w3-button w3-block w3-round w3-dark-grey" disabled>Submit a Bid</button>
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        {% if listing.comment.exists %}
+                            <ul class="w3-ul w3-small" style="width:498px">
+                                <li class="w3-light-grey">Comments</li>
+                                {% for comment in comments %}
+                                <li>
+                                    <p><strong>{{ comment.user.username.capitalize }}</strong></p>
+                                    <p>{{ comment.comment }}</p>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <h5>Be the first to comment</h5>
+                        {% endif %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="w3-row w3-section">
+                                <div class="w3-col" style="width:50px"><label for="{{ form.comment.id_for_label }}"><i class="w3-xxlarge fa fa-pencil"></i> </label></div>
+                                <div class="w3-rest">{{ form.comment }}</div>
+                            </div>
+                            <button type="submit" class="w3-button w3-light-grey" style="float:right">Submit</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="w3-panel w3-col l3">
+            <div class="w3-white padding-16">
+                <ul class="w3-ul w3-small">
+                    <li class="w3-light-grey">All bids</li>
+                    {% for bid in listing.bid.all %}
+                    <li>{{ bid }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
